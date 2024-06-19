@@ -27,10 +27,8 @@ public class Catalog extends BasePage {
         click(CatalogModule);
     }
     public  void  CatalogHeader(){
-
         String Header = getTextValue(catalogHeader);
         System.out.println(Header);
-
     }
 
 
