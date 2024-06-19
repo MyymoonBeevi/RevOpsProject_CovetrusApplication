@@ -9,9 +9,7 @@ import java.util.Set;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import static org.openqa.selenium.support.ui.ExpectedConditions.*;
-
 
 public class BasePage extends Driver {
     protected static WebDriver driver;
