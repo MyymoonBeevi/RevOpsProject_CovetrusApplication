@@ -25,5 +25,4 @@ public class CatalogTest extends Hooks {
         catalog.waitUntilCatalogHeaderDisplay();
      // HeaderCheck
         catalog.CatalogHeader();
-
     }}
