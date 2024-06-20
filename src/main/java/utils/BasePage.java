@@ -1,14 +1,19 @@
 package utils;
 
+import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import org.openqa.selenium.*;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+
 import static org.openqa.selenium.support.ui.ExpectedConditions.*;
 
 public class BasePage extends Driver {
@@ -20,9 +25,30 @@ public class BasePage extends Driver {
         BasePage.driver = driver;
     }
 
+    public void screenShots(){
+        try {
+            File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+
+//            FileUtils.copyFile(scrFile, new File("c:\\tmp\\screenshot.png"));
+            System.out.println("Screenshot taken");
+        } catch (Exception e) {
+
+            System.out.println("Exception while taking screenshot " + e.getMessage());
+        }
+    }
+
     public void click(By locator) {
         try {
             driver.findElement(locator).click();
+        } catch (WebDriverException e) {
+            System.out.println("WebDriverException : FAIL");
+        }
+    }
+    public void actionClick(By locator) {
+        try {
+            Actions action = new Actions(driver);
+             WebElement act = driver.findElement(locator);
+            action.click().build().perform();;
         } catch (WebDriverException e) {
             System.out.println("WebDriverException : FAIL");
         }
@@ -59,9 +85,45 @@ public class BasePage extends Driver {
         }
     }
     public void isVisible(By locator) {
-        WebElement element = driver.findElement(locator);
-        element.isDisplayed();
+        try {
+            WebElement element = driver.findElement(locator);
+            element.isDisplayed();
+        } catch (WebDriverException e) {
+            System.out.println("Value Not Visible ");
+        }
     }
+    public void navigateBackWindow(){
+        try {
+            driver.navigate().back();
+        } catch (WebDriverException e) {
+            System.out.println("WebDriverException : FAIL");
+        }
+    }
+    public void refreshPage(){
+        try{
+            driver.navigate().refresh();
+        } catch (WebDriverException e) {
+            System.out.println("WebDriverException : FAIL");
+        }
+    }
+    public String getTextFromElement(By by){
+        try {
+            return driver.findElement(by).getText();
+        } catch (Throwable e) {
+            System.out.println("WebDriverException : FAIL");
+            Assert.fail("Timeout Error " + e);
+            return "";
+        }
+    }
+    public String getCurrentURL(){
+        try{
+            return driver.getCurrentUrl();
+        }catch (Throwable e){
+            Assert.fail("not able to get Current URL : \n"+e);
+            return null;
+        }
+    }
+
 
     public void scrollDown() throws InterruptedException, AWTException
     {
@@ -79,7 +141,14 @@ public class BasePage extends Driver {
     public void closeCurrentWindow(){
         driver.close();
     }
-
+    public String getAttribute(By by, String attribute){
+        try {
+            return driver.findElement(by).getAttribute(attribute);
+        } catch (Throwable e) {
+            Assert.fail("Timeout Error " + e);
+            return "";
+        }
+    }
     public String getTextValue(By locator){
         String text = "";
         try {
@@ -91,33 +160,6 @@ public class BasePage extends Driver {
         }
         return text;
     }
-
-
-
-//    public long takeSnap(){
-//        TakesScreenshot screenShot =((TakesScreenshot)driver);
-//        long number = (long) Math.floor(Math.random() * 900000000L) + 10000000L;
-//        try {
-//            FileUtils.copyFile(screenShot.getScreenshotAs(OutputType.FILE) , new File("./reports/images/"+number+".jpg"));
-//        } catch (WebDriverException e) {
-//            System.out.println("The browser has been closed.");
-//        } catch (IOException e) {
-//            System.out.println("The snapshot could not be taken");
-//        }
-//        return number;
-//    }
-
-
-//    public static void takeSnapShot(String fileName) {
-//        TakesScreenshot scrShot =((TakesScreenshot)driver);
-//        File SrcFile=scrShot.getScreenshotAs(OutputType.FILE);
-//        File DestFile=new File(System.getProperty("user.dir")+"/screenshots/"+fileName+".png");
-//        try {
-//            FileUtils.copyFile(SrcFile, DestFile);
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
 
     public String getAlertText() {
 
@@ -137,6 +179,15 @@ public class BasePage extends Driver {
             alert.accept();
         } catch (WebDriverException e) {
             System.out.println("WebDriverException : FAIL");
+        }
+    }
+    public void scrollToElement(By locator){
+        try {
+            JavascriptExecutor js = (JavascriptExecutor) driver;
+            js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
+//            js.executeScript("arguments[0].scrollIntoView({behavior: \"smooth\", block: \"center\", inline: \"nearest\"});",driver.findElement(locator));
+        } catch (Throwable e) {
+            Assert.fail("Can't scroll element " + e);
         }
     }
     public void dismissAlert() {
