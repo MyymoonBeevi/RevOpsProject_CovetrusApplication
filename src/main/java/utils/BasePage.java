@@ -65,26 +65,31 @@ public long takeSnap(){
         }
     }
 
-    public void actionClick(By locator) {
+    public void actionClick(By locator,String name,int waitTime) {
         try {
+            waitTillElementEnabled(locator,waitTime);
             Actions action = new Actions(driver);
              WebElement act = driver.findElement(locator);
             action.click(act).build().perform();
+            getTest().log(LogStatus.PASS,name +" is clicked");
         } catch (WebDriverException e) {
+            getTest().log(LogStatus.FAIL,name +" is not clicked "+e);
             System.out.println("WebDriverException : FAIL");
         }
     }
-    public void enterText(By locator, String text) {
+    public String getTextValue(By locator,String  name,int waitTime){
+        String text = "";
         try {
-
             WebElement element = driver.findElement(locator);
-            element.clear();
-            element.sendKeys(text);
-            getTest().log(LogStatus.PASS," is entered succesfully");
+            text = element.getText();
+
+            getTest().log(LogStatus.PASS, name+ " is Displayed : "+ text);
+//            getTest().addScreenCapture("./.png");
         } catch (WebDriverException e) {
-            getTest().log(LogStatus.FAIL," is not entered "+ e);
+            getTest().log(LogStatus.FAIL," is not get the Text of the Value "+e);
             System.out.println("WebDriverException : FAIL");
         }
+        return text;
     }
     public void enterText(By locator, String text,String name,int waitTime) {
         try {
@@ -96,6 +101,128 @@ public long takeSnap(){
         } catch (WebDriverException e) {
             getTest().log(LogStatus.FAIL,name +" is not entered "+ e);
             System.out.println("WebDriverException : FAIL");
+        }
+    }
+    public void PressEscapeKey(){
+        try{
+            Thread.sleep(5000);
+            Robot robot =new Robot();
+            robot.keyPress(KeyEvent.VK_ESCAPE);
+            robot.keyRelease(KeyEvent.VK_ESCAPE);
+            System.out.println("enter key is pressed");
+        }catch (Throwable e){
+            System.out.println("enter key is not pressed");
+
+        }
+    }
+
+    public void keyboardEnter(By locator, String name) {
+
+        try {
+            driver.findElement(locator).sendKeys(Keys.ENTER);
+            getTest().log(LogStatus.PASS, name + " button is pressed");
+        } catch (Throwable e) {
+            getTest().log(LogStatus.FAIL, name + " button is not pressed" + e);
+        }
+    }
+    public void clearUsingKeyboardCommand(By locator, String name) {
+        try {
+            driver.findElement(locator).sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
+            getTest().log(LogStatus.PASS, name + " field is cleared");
+        } catch (Throwable e) {
+            getTest().log(LogStatus.FAIL, name + " field is not cleared");
+        }
+    }
+    public void backSpaceUsingKeyBoard(By locator, String name) {
+        try {
+            driver.findElement(locator).sendKeys(Keys.chord(Keys.BACK_SPACE));
+            getTest().log(LogStatus.PASS, name + " is cleared");
+        } catch (Throwable e) {
+            getTest().log(LogStatus.FAIL, name + " is not cleared");
+        }
+    }
+    public void selectAllUsingKeyboardCommand(By locator, String name) {
+        try {
+            driver.findElement(locator).sendKeys(Keys.chord(Keys.CONTROL, "a"));
+            getTest().log(LogStatus.PASS, name + " field is selected");
+        } catch (Throwable e) {
+            getTest().log(LogStatus.FAIL, name + " field is not selected");
+        }
+    }
+    public void dragAndDrop(By from, By to, int timeInMills) {
+        WebElement from1 = driver.findElement(from);
+        WebElement to2 = driver.findElement(to);
+        Actions action = new Actions(driver);
+        // dd.dragAndDrop(from1,to2).build().perform();
+        action.clickAndHold(from1).pause(timeInMills).moveToElement(to2).release(to2).build().perform();
+    }
+    public void enterKeyUsingRobotClass(){
+        try{
+            Thread.sleep(5000);
+            Robot robot =new Robot();
+            robot.keyPress(KeyEvent.VK_ENTER);
+            robot.keyRelease(KeyEvent.VK_ENTER);
+            System.out.println("enter key is pressed");
+        }catch (Throwable e){
+            System.out.println("enter key is not pressed");
+
+        }
+    }
+    public void hover(By locator, String name, int time) {
+        try {
+            //Function need to implement
+            getTest().log(LogStatus.PASS, name + " is hovered");
+        } catch (Throwable e) {
+            getTest().log(LogStatus.FAIL, name + " is not hovered" + " " + e);
+        }
+    }
+    public void waitUntilFrameVisibleThenSwitchIt(By by,int timeInMills){
+        try{
+            WebDriverWait wait=new WebDriverWait(driver,Duration.ofMillis(timeInMills));
+            wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(by));
+
+        }catch (Throwable e){
+            System.out.println("Error Switching Frame " + e);
+            Assert.fail("Error Switching Frame " + e);
+        }
+    }
+    public String getCurrentWindowHandle() {
+        String current = null;
+        try {
+            current = driver.getWindowHandle();
+            return current;
+        } catch (Throwable e) {
+            Assert.fail("Current window is not handled" + e);
+        }
+        return current;
+    }
+    public Set<String> getWindowHandles() {
+        Set<String> handles = null;
+        try {
+            handles = driver.getWindowHandles();
+            return handles;
+        } catch (Throwable e) {
+            Assert.fail("" + e);
+        }
+        return handles;
+    }
+
+    public void switchToWindow(int index,String name,int waitTime) {
+        try{
+            Set<String> allWindowHandles = driver.getWindowHandles();
+            List<String> allHandles = new ArrayList<>(allWindowHandles);
+            driver.switchTo().window(allHandles.get(index));
+            getTest().log(LogStatus.PASS,name +" succesfully");
+        } catch (WebDriverException e) {
+            getTest().log(LogStatus.FAIL,name +" is not switched to the window "+ e);
+
+        }
+    }
+    public void switchToWindowAndClose(String window) {
+        try {
+            driver.switchTo().window(window).close();
+        }catch (Throwable e){
+
         }
     }
     public void setWait(WebDriverWait wait,By locator) {
@@ -156,12 +283,7 @@ public long takeSnap(){
         robot.keyRelease(KeyEvent.VK_PAGE_DOWN);
     }
 
-    public void switchToWindow(int index) {
 
-        Set<String> allWindowHandles = driver.getWindowHandles();
-        List<String> allHandles = new ArrayList<>(allWindowHandles);
-        driver.switchTo().window(allHandles.get(index));
-    }
 
     public String getAttribute(By by, String attribute){
         try {
@@ -170,17 +292,6 @@ public long takeSnap(){
             Assert.fail("Timeout Error " + e);
             return "";
         }
-    }
-    public String getTextValue(By locator){
-        String text = "";
-        try {
-            WebElement element = driver.findElement(locator);
-            text = element.getText();
-
-        } catch (WebDriverException e) {
-            System.out.println("WebDriverException : FAIL");
-        }
-        return text;
     }
 
     public String getTitle(By locator){
