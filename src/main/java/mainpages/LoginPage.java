@@ -21,30 +21,31 @@ public class LoginPage extends BasePage {
 
     public void SignedIn(){
 
-        click(SignIn);
+        click(SignIn,"SignIn Button",10000);
     }
     public void LogoutButton(){
         click(logoutButton);
     }
     public void LoggedIn(){
-        click(logIn);
+        actionClick(logIn,"LoggedIn Button",1000);
     }
     public void LoggedOut(){
-        click(logout);
+
+        actionClick(logout,"Logged Out Button ",1000);
     }
     // Page specific methods
-    public void emailId(String name) {
-        enterText(email, name);
+    public void emailId(String emailid) {
+        enterText(email, emailid,"emailId",1000);
     }
     public void password(String pass) {
 
-        enterText(password, pass);
+        enterText(password, pass , "Password",1000);
     }
-    public void window(){
-        switchToWindow(1);
+    public void loginWindow(){
+        switchToWindow(1,"Switch to the Login Window ",1000);
     }
     public void homeWindow(){
-        switchToWindow(0);
+        switchToWindow(0,"Switch to the Home Window ",1000);
     }
     public void waiting(){
         waitTillElementEnabled(SignIn,30);
