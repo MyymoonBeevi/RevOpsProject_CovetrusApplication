@@ -110,6 +110,11 @@ public class Hooks extends Driver {
 
         }
     }
+    @AfterClass
+    public void vv(){
+        closeTest(test);
+
+    }
     @AfterTest(alwaysRun = true)
     public void reportclose() throws Exception {
         int reportStatusCount;

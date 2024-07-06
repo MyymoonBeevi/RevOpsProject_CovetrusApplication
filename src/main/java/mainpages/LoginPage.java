@@ -15,7 +15,7 @@ public class LoginPage extends BasePage {
     private By SignIn = By.xpath("//span[text()='Sign In']");
     private By logIn = By.xpath("//span[text() = 'Log In']");
     private  By logoutButton = By.xpath("(//div[@id='root']//button)[3]");
-    private  By logout = By .xpath("//p[text()='Logout']");
+    private  By logout = By .xpath("//div//ul//li[3]//p[text()='Exit from signed in account']");
 
 
 
@@ -23,15 +23,16 @@ public class LoginPage extends BasePage {
 
         click(SignIn,"SignIn Button",10000);
     }
-    public void LogoutButton(){
-        click(logoutButton);
-    }
     public void LoggedIn(){
         actionClick(logIn,"LoggedIn Button",1000);
     }
+    public void LogoutButton(){
+        click(logoutButton,"Logged Out Button ",1000);
+    }
+
     public void LoggedOut(){
 
-        actionClick(logout,"Logged Out Button ",1000);
+      click(logout,"Logged Out Button ",1000);
     }
     // Page specific methods
     public void emailId(String emailid) {

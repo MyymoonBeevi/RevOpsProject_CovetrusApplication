@@ -12,7 +12,6 @@ import static utils.ExtentReport.getTest;
 
 public class CatalogTest extends Hooks {
    @BeforeClass(dependsOnMethods = {"setUp"})
-//@Test
    public void LoginTest()  {
        test = getTest("Login the Engage Application");
        LoginPage loginPage = new LoginPage(driver);
@@ -37,11 +36,12 @@ public class CatalogTest extends Hooks {
     @Test(groups = {"smoke"}, priority=0)
     public void OpenCatalogModule() {
         test = getTest("Open the Catalog Module in the Engage Application");
+//        LoginTest();
         Catalog catalog = new Catalog(driver);
         catalog.ClickCatalogModule();
         catalog.waitUntilCatalogHeaderDisplay();
    }
-    @Test(groups = {"regression"}, priority=1)
+    @Test(groups = {"smoke"}, priority=1)
     public void CatalogModuleList() {
         test = getTest("Open the Product List in Catalog Module in the Engage Application");
         Catalog catalog = new Catalog(driver);
@@ -50,7 +50,7 @@ public class CatalogTest extends Hooks {
         catalog.waitUntilDoseValueFilterDisplay();
 
     }
-    @Test(groups = {"regression"}, priority=2)
+    @Test(groups = {"smoke"}, priority=2)
     public void CategoryExpansion() {
         test = getTest("Select the Category in Catalog Module in the Engage Application");
         Catalog catalog = new Catalog(driver);
@@ -62,7 +62,7 @@ public class CatalogTest extends Hooks {
         catalog.DoneButton();
         catalog.breadCrumb();
     }
-    @Test(groups = {"regression","regression"}, priority=4)
+    @Test(groups = {"smoke","regression"}, priority=4)
     public void CustomerDropdownOpen()  {
         test = getTest("Click the Customer Dropdown");
         Catalog catalog = new Catalog(driver);
@@ -70,7 +70,7 @@ public class CatalogTest extends Hooks {
         catalog.ClickCustomerDropdown();
         catalog.ClickCustomerIdInDropdown();
     }
-    @Test(groups = {"regression","regression"}, priority=5)
+    @Test(groups = {"smoke","regression"}, priority=5)
     public void ClickProductUsingSku() throws InterruptedException {
         test = getTest("Click the Customer Dropdown");
         Catalog catalog = new Catalog(driver);
@@ -83,7 +83,7 @@ public class CatalogTest extends Hooks {
         catalog.ClickProductSku();
         catalog.GetPriceValue();
     }
-    @Test(groups = {"regression","regression"}, priority=6)
+    @Test(groups = {"smoke","regression"}, priority=6)
     public void LogoutTest()  {
         test = getTest("Logout the Application");
         LoginPage loginPage = new LoginPage(driver);

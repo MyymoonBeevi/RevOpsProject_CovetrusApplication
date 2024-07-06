@@ -22,7 +22,7 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.*;
 import static utils.ExtentReport.getTest;
 
 public class BasePage extends Driver {
-    protected static WebDriver driver;
+    public  static WebDriver driver;
     WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     private String fileName;
 
@@ -46,14 +46,7 @@ public long takeSnap(){
     return number;
 }
 
-    public void click(By locator) {
-        try {
-            driver.findElement(locator).click();
-            getTest().log(LogStatus.PASS,"");
-        } catch (WebDriverException e) {
-            System.out.println("WebDriverException : FAIL");
-        }
-    }
+
     public void click(By locator,String name,int waitTime) {
         try {
             waitTillElementEnabled(locator,waitTime);

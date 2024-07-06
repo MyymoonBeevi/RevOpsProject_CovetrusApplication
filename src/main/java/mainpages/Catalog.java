@@ -63,16 +63,16 @@ public class Catalog extends BasePage {
         System.out.println(Header);
     }
     public void ClickCustomerDropdown(){
-        actionClick(customerDropdown,"Customer Dropdown",1000);
+        click(customerDropdown,"Customer Dropdown",2000);
     }
     public void ClickCustomerIdInDropdown(){
-        actionClick(cusomerId,"Customer Id",1000);
+        click(cusomerId,"Customer Id",3000);
     }
     public void ClickProductSku(){
-        actionClick(clickProductSku,"Product with SKU: 025097",1000);
+        click(clickProductSku,"Product with SKU: 025097",5000);
     }
     public void GetPrice(){
-        actionClick(getPrice,"Get the Price of the Product with SKU: 025097",1000);
+        click(getPrice,"Get the Price of the Product with SKU: 025097",4000);
     }
     public void PressEscKey(){
         PressEscapeKey();
